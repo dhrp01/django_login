@@ -1,0 +1,52 @@
+ERROR 2025-01-05 08:00:32,928 log Internal Server Error: /authentication_app/login/
+Traceback (most recent call last):
+  File "/Users/dhrumeen/projects/django_login/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/dhrumeen/projects/django_login/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/dhrumeen/projects/django_login/authentication/authentication_app/views.py", line 19, in login_view
+    return redirect('home')
+  File "/Users/dhrumeen/projects/django_login/.venv/lib/python3.13/site-packages/django/shortcuts.py", line 49, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+                          ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dhrumeen/projects/django_login/.venv/lib/python3.13/site-packages/django/shortcuts.py", line 180, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "/Users/dhrumeen/projects/django_login/.venv/lib/python3.13/site-packages/django/urls/base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dhrumeen/projects/django_login/.venv/lib/python3.13/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'home' not found. 'home' is not a valid view function or pattern name.
+ERROR 2025-01-05 08:00:32,930 basehttp "POST /authentication_app/login/ HTTP/1.1" 500 83633
+ERROR 2025-01-05 08:03:36,318 log Internal Server Error: /authentication_app/
+Traceback (most recent call last):
+  File "/Users/dhrumeen/projects/django_login/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/dhrumeen/projects/django_login/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/dhrumeen/projects/django_login/authentication/authentication_app/views.py", line 53, in home_view
+    return render(request, 'home.html')
+  File "/Users/dhrumeen/projects/django_login/.venv/lib/python3.13/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/dhrumeen/projects/django_login/.venv/lib/python3.13/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Users/dhrumeen/projects/django_login/.venv/lib/python3.13/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: home.html
+ERROR 2025-01-05 08:03:36,319 basehttp "GET /authentication_app/ HTTP/1.1" 500 77396
+ERROR 2025-01-05 08:04:23,423 log Internal Server Error: /authentication_app/
+Traceback (most recent call last):
+  File "/Users/dhrumeen/projects/django_login/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/dhrumeen/projects/django_login/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/dhrumeen/projects/django_login/authentication/authentication_app/views.py", line 53, in home_view
+    return render(request, 'home.html')
+  File "/Users/dhrumeen/projects/django_login/.venv/lib/python3.13/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/dhrumeen/projects/django_login/.venv/lib/python3.13/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Users/dhrumeen/projects/django_login/.venv/lib/python3.13/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: home.html
+ERROR 2025-01-05 08:04:23,424 basehttp "GET /authentication_app/ HTTP/1.1" 500 77396

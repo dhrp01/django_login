@@ -1,0 +1,6 @@
+.venv
+pyproject.toml
+.DS-Store
+__pycache__/
+*.py[cod]
+*$py.class
