@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'authentication_app.middleware.SessionTimeoutMiddleware',
 ]
 
 ROOT_URLCONF = 'authentication.urls'
@@ -99,6 +100,15 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Session time-out
+SESSION_COOKIE_AGE = 60*10
+# Force session end when browser is closed
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# Inactive user session timeout
+SESSION_TIMEOUT = 60*5
+
+LOGIN_URL = '/authentication_app/login/'
 
 
 # Internationalization

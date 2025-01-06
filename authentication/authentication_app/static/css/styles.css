@@ -1,0 +1,7 @@
+.message.error {
+    color: red;
+}
+#password-strength {
+    font-size: 0.9em;
+    margin-top: 5px;
+}

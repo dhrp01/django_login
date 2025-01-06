@@ -1,16 +1,46 @@
+{% load static %}
 <!doctype html>
 <html>
     <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+        <script src="https://unpkg.com/htmx.org"></script>
+        <script src="{% static 'js/validator.js' %}"></script>
         <title>SIGNUP</title>
     </head>
     <body>
-        <form method="post">
+        <form
+            method="post"
+            hx-post="{% url 'signup'%}"
+            hx-target="#message-container"
+            hx-swap="innerHTML"
+        >
             {% csrf_token %}
             <label for="username">Username:</label>
             <input type="text" name="username" id="username" required />
+            <div class="message"></div>
+            <br />
+            <label for="firstname">First Name:</label>
+            <input type="text" name="firstname" id="firstname" required />
+            <div class="message"></div>
+            <br />
+            <label for="lastname">Last Name:</label>
+            <input type="text" name="lastname" id="lastname" required />
+            <div class="message"></div>
+            <br />
+            <label for="email">Email:</label>
+            <input type="text" name="email" id="email" required />
+            <div class="message"></div>
+            <br />
+            <label for="phone">Phone:</label>
+            <input type="text" name="phone" id="phone" required />
+            <div class="message"></div>
             <br />
             <label for="password">Password:</label>
             <input type="password" name="password" id="password" required />
+            <div class="message"></div>
+            <div id="password-strength"></div>
             <br />
             <label for="confirm_password">Confirm password:</label>
             <input
@@ -19,9 +49,11 @@
                 id="confirm_password"
                 required
             />
+            <div class="message"></div>
             <br />
             <button type="submit">Sign Up</button>
         </form>
+        <div id="message-container"></div>
         <a href="{% url 'login' %}">Already have an account? Login</a>
     </body>
 </html>
