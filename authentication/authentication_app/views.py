@@ -33,6 +33,13 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            send_mail(
+                "Verify email",
+                "Login attempt was made",
+                "your-email@gmail.com",
+                [user.email],
+                fail_silently=False
+            )
             cache.delete(f'failed_login_{username}')
             logger.debug(f"Logged in as user {username}")
             return redirect('home')
