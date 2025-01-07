@@ -5,10 +5,17 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
-from .validator import is_invalid_password, is_valid_email, is_valid_phone
+from .models import UserProfile
 from .utils import render_htmx_message
+from .validator import is_invalid_password, is_valid_email, is_valid_phone
 
 logger = logging.getLogger(__name__)
 
@@ -64,24 +71,42 @@ def signup_view(request):
             return render_htmx_message(context)
 
         if User.objects.filter(email=email).exists():
-            context = {"message": "Username already taken.", "status": "error"}
+            context = {"message": "Email already taken.", "status": "error"}
             return render_htmx_message(context)
 
         if password == confirm_password:
             invalid_messages = is_invalid_password(password)
+
             if not invalid_messages:
                 try:
+
                     user = User.objects.create_user(
                         username=username,
-                        firstname=firstname,
-                        lastname=lastname,
+                        first_name=firstname,
+                        last_name=lastname,
                         email=email,
-                        phone=phone,
                         password=password
                     )
+                    user.is_active = False
                     user.save()
+                    UserProfile.objects.create(user=user, phone=phone)  # pyright: ignore
+
+                    uid = urlsafe_base64_encode(force_bytes(user.pk))
+                    token = default_token_generator.make_token(user)
+                    email_verification_link = request.build_absolute_uri(f'/authentication_app/verify-email/{uid}/{token}')
+                    send_mail(
+                        "Verify email",
+                        f"Hi {username},\n\n Please verify your email address by clicking on the" \
+                        f"link below or copy pasting it in a browser:\n{email_verification_link}\n\nThank you, Authentication App",
+                        "your-email@gmail.com",
+                        [email],
+                        fail_silently=False
+                    )
+
                     logger.debug(f"Created user {username} successfully")
-                    return redirect('login')
+                    success_response = JsonResponse({"message": "Account Created. Check your mail for verification. Redirecting to login..."})
+                    success_response['HX-Redirect'] = reverse('login')
+                    return success_response
                 except Exception as e:
                     logger.error(f"Failed creating user {username}. Error: {e}")
                     context = {"message": f"Error creating account for user {username}.", "status": "error"}
@@ -94,6 +119,25 @@ def signup_view(request):
             return render_htmx_message(context)
 
     return render(request, 'authentication_app/signup.html')
+
+def verify_email(request, uidb64, token):
+    """Handle email verification"""
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):  # pyright: ignore
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        logger.info(f"Email verified successful for user {user}")
+        return redirect('login')
+    else:
+        logger.error("Invalid or experied link")
+        context = {"message": "Invalid or experied link", "status": "error"}
+        render_htmx_message(context)
+        return redirect('signup')
 
 def logout_view(request):
     """User logout view for authentication project"""

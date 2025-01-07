@@ -110,6 +110,17 @@ SESSION_TIMEOUT = 60*5
 
 LOGIN_URL = '/authentication_app/login/'
 
+# Email verification settings
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Console email verification for development purpose
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Production email verification
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'your-email@gmail.com'
+EMAIL_HOST_PASSWORD = 'your-email-password'
+
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
