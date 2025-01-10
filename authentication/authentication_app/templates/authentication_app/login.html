@@ -5,25 +5,21 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+        <script src="https://unpkg.com/htmx.org"></script>
         <title>LOGIN</title>
     </head>
     <body>
         <form
             method="post"
-            hx-post="{% url 'login'%}"
+            hx-post="{% url 'login' %}"
             hx-target="#message-container"
             hx-swap="innerHTML"
         >
             {% csrf_token %}
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username" required />
-            <br />
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required />
-            <br />
+            {{ form.as_p }}
             <button type="submit">Login</button>
-            <div id="message-container"></div>
         </form>
+        <div id="message-container"></div>
         <a href="{% url 'signup' %}">Don't have an account? Sign up</a>
         <br />
         <a href="{% url 'password_reset' %}">Forgot Password? Reset</a>

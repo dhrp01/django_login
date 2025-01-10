@@ -9,15 +9,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const passwordStrengthDiv = document.querySelector("#password-strength");
 
   const showMessage = (input, message) => {
-    const messageDiv = input.nextElementSibling;
+    let messageDiv = input.nextElementSibling;
+
+    if (!messageDiv || !messageDiv.classList.contains("message")) {
+      messageDiv = document.createElement("div");
+      messageDiv.className = "message";
+      input.insertAdjacentElement("afterend", messageDiv);
+    }
     messageDiv.innerHTML = message;
     messageDiv.className = "message error";
   };
 
   const clearMessage = (input) => {
     const messageDiv = input.nextElementSibling;
-    messageDiv.innerHTML = "";
-    messageDiv.className = "message";
+    if (messageDiv && messageDiv.classList.contains("message")) {
+        messageDiv.remove();
+    }
   };
 
   const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
