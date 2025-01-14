@@ -5,7 +5,7 @@ from .forms import ProjectForm, ReviewForm
 from .models import Project
 
 def project_list(request):
-    projects = Project.objects.all()
+    projects = Project.objects.all()  # pyright: ignore
     search_query = request.GET.get('q', '')
     if search_query:
         projects = projects.filter(title_icontains=search_query)
