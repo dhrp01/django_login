@@ -1,0 +1,21 @@
+<h1>{{ project.title }}</h1>
+<p>{{ project.description }}</p>
+<p><a href="{{ project.github_link }}">GitHub</a> | <a href="{{ project.demo_link }}">Live Demo</a> | <a href="{{ project.report_link }}">Report</a></p>
+<h2>Reviews</h2>
+<ul>
+    {% for review in reviews %}
+        <li>
+            <p><strong>{{ review.user.username }}</strong>: {{ review.grades }} </p>
+            <p>{{ review.comment }}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% if user.is_authenticated %}
+    <form method="post" action="{% url 'add_project_review' project.pk %}">
+        {% csrf_token %}
+        {{ review_form.as_p }}
+        <button type="submit">Submit Review</button>
+    </form>
+{% else %}
+    <p><a href="{% url 'login' %}">Log in</a> to leave a review.</p>
+{% endif %}

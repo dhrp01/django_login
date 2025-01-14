@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a New Project</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Add a New Project</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit Project</button>
+        </form>
+
+        {% if form.errors %}
+            <div class="error-messages">
+                <h3>Please fix the following errors:</h3>
+                <ul>
+                    {% for field, errors in form.errors.items %}
+                        <li><strong>{{ field|capfirst }}:</strong> {{ errors|join:", " }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
